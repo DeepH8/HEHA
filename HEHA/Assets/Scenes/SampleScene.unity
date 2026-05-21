@@ -3559,6 +3559,7 @@ GameObject:
   - component: {fileID: 900001003}
   - component: {fileID: 900001004}
   - component: {fileID: 900001005}
+  - component: {fileID: 900001006}
   m_Layer: 0
   m_Name: GameSystems
   m_TagString: Untagged
@@ -3626,6 +3627,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HEHA.Obby.Core.GameOutcomeManager
   maxDeaths: 10
   resultScreen: {fileID: 1878952847}
+--- !u!114 &900001006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900001001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 536663b29001a5144be7e346046901af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HEHA.Obby.Core.GameAudioController
+  jumpClip: {fileID: 8300000, guid: 59283eb229715e9489138cdc96e12482, type: 3}
+  deathClip: {fileID: 8300000, guid: 3135def655bbe8d49a6919749ceb7c6b, type: 3}
+  winClip: {fileID: 8300000, guid: 31234b3a62e68724e9f74d4a5224774e, type: 3}
+  loseClip: {fileID: 8300000, guid: 2708c511ddcb7bb4398773d910b1f13b, type: 3}
+  sfxSource: {fileID: 0}
+  jumpVolume: 0.85
+  deathVolume: 0.4
+  winVolume: 0.9
+  loseVolume: 0.9
 --- !u!1 &900010001
 GameObject:
   m_ObjectHideFlags: 0

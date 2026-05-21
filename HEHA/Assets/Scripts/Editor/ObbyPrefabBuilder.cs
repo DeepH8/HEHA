@@ -154,7 +154,7 @@ namespace HEHA.Obby.Editor
             camGo.transform.localPosition = new Vector3(0f, 1.5f, -8f);
             Camera cam = camGo.AddComponent<Camera>();
             cam.tag = "MainCamera";
-            AudioListener listener = camGo.AddComponent<AudioListener>();
+            camGo.AddComponent<AudioListener>();
 
             RobloxCameraController cameraController = root.GetComponent<RobloxCameraController>();
             SerializedObject camSo = new SerializedObject(cameraController);
@@ -162,8 +162,6 @@ namespace HEHA.Obby.Editor
             camSo.FindProperty("pitchPivot").objectReferenceValue = pitchPivot.transform;
             camSo.FindProperty("playerCamera").objectReferenceValue = cam;
             camSo.ApplyModifiedPropertiesWithoutUndo();
-
-            Object.DestroyImmediate(listener);
 
             return root;
         }
@@ -384,6 +382,26 @@ namespace HEHA.Obby.Editor
             uiSo.FindProperty("mainMenuSceneName").stringValue = "MainMenu";
             uiSo.FindProperty("gameSceneName").stringValue = MainMenuSceneBuilder.GameSceneName;
             uiSo.ApplyModifiedPropertiesWithoutUndo();
+
+            WireGameAudio(systems);
+        }
+
+        static void WireGameAudio(GameObject systems)
+        {
+            GameAudioController audio = systems.GetComponent<GameAudioController>();
+            if (audio == null)
+                audio = systems.AddComponent<GameAudioController>();
+
+            SerializedObject audioSo = new SerializedObject(audio);
+            audioSo.FindProperty("jumpClip").objectReferenceValue =
+                AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/SFX/Jump.mp3");
+            audioSo.FindProperty("deathClip").objectReferenceValue =
+                AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/SFX/Death.mp3");
+            audioSo.FindProperty("winClip").objectReferenceValue =
+                AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/SFX/Win.mp3");
+            audioSo.FindProperty("loseClip").objectReferenceValue =
+                AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/SFX/Lose.mp3");
+            audioSo.ApplyModifiedPropertiesWithoutUndo();
         }
 
         [MenuItem("HEHA/Wire Game Win Lose Systems")]

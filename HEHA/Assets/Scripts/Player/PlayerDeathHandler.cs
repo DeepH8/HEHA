@@ -33,6 +33,7 @@ namespace HEHA.Obby.Player
                 return;
 
             IsDead = true;
+            GameAudioController.Instance?.PlayDeath();
             OnDied?.Invoke(cause);
 
             if (movement != null)

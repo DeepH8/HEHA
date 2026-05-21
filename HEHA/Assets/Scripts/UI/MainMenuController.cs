@@ -1,3 +1,4 @@
+using HEHA.Obby.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,7 +8,13 @@ namespace HEHA.Obby.UI
     public class MainMenuController : MonoBehaviour
     {
         [SerializeField] string gameSceneName = "SampleScene";
+        [SerializeField] GameObject menuPanel;
+        [SerializeField] GameObject settingsPanel;
         [SerializeField] Button playButton;
+        [SerializeField] Button settingsButton;
+        [SerializeField] Button settingsBackButton;
+        [SerializeField] Slider musicVolumeSlider;
+        [SerializeField] Text musicVolumeValueText;
 
         void Awake()
         {
@@ -15,6 +22,7 @@ namespace HEHA.Obby.UI
             Cursor.visible = true;
             Time.timeScale = 1f;
             EnsureMenuCanvasVisible();
+            ShowMenuPanel();
         }
 
         void EnsureMenuCanvasVisible()
@@ -40,12 +48,78 @@ namespace HEHA.Obby.UI
         {
             if (playButton != null)
                 playButton.onClick.AddListener(StartGame);
+
+            if (settingsButton != null)
+                settingsButton.onClick.AddListener(ShowSettingsPanel);
+
+            if (settingsBackButton != null)
+                settingsBackButton.onClick.AddListener(ShowMenuPanel);
+
+            if (musicVolumeSlider != null)
+            {
+                musicVolumeSlider.SetValueWithoutNotify(GameSettings.MusicVolume);
+                musicVolumeSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
+                UpdateMusicVolumeLabel(musicVolumeSlider.value);
+            }
+
+            BackgroundMusicController.EnsurePlaying();
+            BackgroundMusicController.Instance?.ApplyVolume();
         }
 
         void OnDestroy()
         {
             if (playButton != null)
                 playButton.onClick.RemoveListener(StartGame);
+
+            if (settingsButton != null)
+                settingsButton.onClick.RemoveListener(ShowSettingsPanel);
+
+            if (settingsBackButton != null)
+                settingsBackButton.onClick.RemoveListener(ShowMenuPanel);
+
+            if (musicVolumeSlider != null)
+                musicVolumeSlider.onValueChanged.RemoveListener(OnMusicVolumeChanged);
+        }
+
+        void OnMusicVolumeChanged(float value)
+        {
+            if (BackgroundMusicController.Instance != null)
+                BackgroundMusicController.Instance.SetMusicVolume(value);
+            else
+                GameSettings.MusicVolume = value;
+
+            UpdateMusicVolumeLabel(value);
+        }
+
+        void UpdateMusicVolumeLabel(float value)
+        {
+            if (musicVolumeValueText != null)
+                musicVolumeValueText.text = $"{Mathf.RoundToInt(value * 100f)}%";
+        }
+
+        void ShowMenuPanel()
+        {
+            if (menuPanel != null)
+                menuPanel.SetActive(true);
+
+            if (settingsPanel != null)
+                settingsPanel.SetActive(false);
+        }
+
+        public void ShowSettingsPanel()
+        {
+            if (menuPanel != null)
+                menuPanel.SetActive(false);
+
+            if (settingsPanel != null)
+                settingsPanel.SetActive(true);
+
+            if (musicVolumeSlider != null)
+            {
+                float volume = GameSettings.MusicVolume;
+                musicVolumeSlider.SetValueWithoutNotify(volume);
+                UpdateMusicVolumeLabel(volume);
+            }
         }
 
         public void StartGame()
@@ -56,6 +130,7 @@ namespace HEHA.Obby.UI
                 return;
             }
 
+            BackgroundMusicController.EnsurePlaying();
             SceneManager.LoadScene(gameSceneName);
         }
     }

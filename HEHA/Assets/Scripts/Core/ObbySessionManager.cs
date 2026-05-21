@@ -100,6 +100,8 @@ namespace HEHA.Obby.Core
                 if (deathHandler != null)
                     GameOutcomeManager.Instance.RegisterPlayer(deathHandler);
             }
+
+            GameAudioController.EnsureSceneAudioListener();
         }
     }
 }

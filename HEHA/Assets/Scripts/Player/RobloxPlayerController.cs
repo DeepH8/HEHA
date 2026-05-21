@@ -1,3 +1,4 @@
+using HEHA.Obby.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -88,6 +89,7 @@ namespace HEHA.Obby.Player
                 {
                     velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
                     animationController?.TriggerJump();
+                    GameAudioController.Instance?.PlayJump();
                 }
                 else if (ladderState != null && ladderState.IsClimbing)
                 {

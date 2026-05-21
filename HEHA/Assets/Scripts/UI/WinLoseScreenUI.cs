@@ -1,3 +1,4 @@
+using HEHA.Obby.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -49,6 +50,11 @@ namespace HEHA.Obby.UI
 
             if (loseMessageText != null)
                 loseMessageText.text = $"You died {deathCount} times before reaching the goal.";
+
+            if (won)
+                GameAudioController.Instance?.PlayWin();
+            else
+                GameAudioController.Instance?.PlayLose();
         }
 
         public void Hide()
